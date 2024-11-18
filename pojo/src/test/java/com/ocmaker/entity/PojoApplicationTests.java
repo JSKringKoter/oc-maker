@@ -1,4 +1,4 @@
-package com.ocmaker.pojo;
+package com.ocmaker.entity;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
