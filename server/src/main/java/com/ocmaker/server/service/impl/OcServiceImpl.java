@@ -1,7 +1,10 @@
 package com.ocmaker.server.service.impl;
 
+import com.ocmaker.common.result.ErrorTypes;
 import com.ocmaker.dto.OcDTO;
 import com.ocmaker.entity.Oc;
+import com.ocmaker.server.exception.NoSuchOcException;
+import com.ocmaker.server.exception.PermissionDeniedException;
 import com.ocmaker.server.mapper.OcMapper;
 import com.ocmaker.server.service.OcService;
 import com.ocmaker.vo.OcBaseInfoVO;
@@ -12,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class OcServiceImpl implements OcService {
@@ -76,8 +80,16 @@ public class OcServiceImpl implements OcService {
      * @return
      */
     @Override
-    public OcDetailVO selectOcDetail(Integer ocId) {
+    public OcDetailVO selectOcDetail(Integer ocId, Integer userUId) throws RuntimeException {
         Oc oc = ocMapper.selectOcDetail(ocId);
+        //如果请求的资源不存在，抛出异常
+        if (oc == null) {
+            throw new NoSuchOcException(ErrorTypes.NO_SUCH_OC);
+        }
+        //如果请求了不是自己的oc，抛出异常
+        if (!Objects.equals(oc.getUserUid(), userUId)) {
+            throw new PermissionDeniedException(ErrorTypes.PERMISSION_DENIED);
+        }
         OcDetailVO ocDetailVO = OcDetailVO.builder()
                 .name(oc.getName())
                 .gender(oc.getGender())
@@ -95,5 +107,49 @@ public class OcServiceImpl implements OcService {
                 .hobby(oc.getHobby())
                 .build();
         return  ocDetailVO;
+    }
+
+    /**
+     * 修改OC的详细信息
+     * @param ocDetailVO
+     * @param ocId
+     * @return
+     */
+    @Override
+    public Boolean updateOcDetailInfo(OcDetailVO ocDetailVO, Integer ocId) {
+
+        Oc oc = Oc.builder()
+                .name(ocDetailVO.getName())
+                .gender(ocDetailVO.getGender())
+                .age(ocDetailVO.getAge())
+                .height(ocDetailVO.getHeight())
+                .weight(ocDetailVO.getWeight())
+                .skinColor(ocDetailVO.getSkinColor())
+                .hair(ocDetailVO.getHair())
+                .hairColor(ocDetailVO.getHairColor())
+                .eyesColor(ocDetailVO.getEyesColor())
+                .body(ocDetailVO.getBody())
+                .face(ocDetailVO.getFace())
+                .personality(ocDetailVO.getPersonality())
+                .skill(ocDetailVO.getSkill())
+                .hobby(ocDetailVO.getHobby())
+                .updateTime(LocalDateTime.now())
+                .build();
+
+        ocMapper.updateOcDetailInfo(oc, ocId);
+        return true;
+    }
+
+    @Override
+    public Boolean deleteOc(Integer ocId, Integer userUid) {
+        if (!Objects.equals(userUid, ocMapper.selectUserUidByOcId(ocId))) {
+            throw new PermissionDeniedException(ErrorTypes.PERMISSION_DENIED);
+        }
+        if (userUid == null) {
+            throw new NoSuchOcException(ErrorTypes.NO_SUCH_OC);
+        }
+
+        ocMapper.deleteOc(ocId);
+        return true;
     }
 }

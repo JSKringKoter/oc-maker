@@ -12,5 +12,9 @@ public interface OcService {
 
     public List<OcBaseInfoVO> listAllOcBaseInfo(int user_uid);
 
-    public OcDetailVO selectOcDetail(Integer ocId);
+    public OcDetailVO selectOcDetail(Integer ocId, Integer userUId);
+
+    public Boolean updateOcDetailInfo(OcDetailVO ocDetailVO, Integer ocId);
+
+    public Boolean deleteOc(Integer ocId, Integer userUid);
 }
