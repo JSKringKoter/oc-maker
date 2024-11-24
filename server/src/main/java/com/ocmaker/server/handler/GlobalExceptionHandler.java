@@ -2,7 +2,7 @@ package com.ocmaker.server.handler;
 
 import com.ocmaker.common.result.Result;
 import com.ocmaker.server.exception.LoginFailException;
-import com.ocmaker.server.exception.NoSuchOcException;
+import com.ocmaker.server.exception.NoSuchSourceException;
 import com.ocmaker.server.exception.PermissionDeniedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,8 +30,8 @@ public class GlobalExceptionHandler {
      * @param ex
      * @return
      */
-    @ExceptionHandler(NoSuchOcException.class)
-    public ResponseEntity<NoSuchOcException> noSuchOcExceptionResponseEntity(Exception ex) {
+    @ExceptionHandler(NoSuchSourceException.class)
+    public ResponseEntity<NoSuchSourceException> noSuchOcExceptionResponseEntity(Exception ex) {
         ex.printStackTrace();
         return Result.error(404);
     }

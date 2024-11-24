@@ -3,7 +3,7 @@ package com.ocmaker.server.service.impl;
 import com.ocmaker.common.result.ErrorTypes;
 import com.ocmaker.dto.OcDTO;
 import com.ocmaker.entity.Oc;
-import com.ocmaker.server.exception.NoSuchOcException;
+import com.ocmaker.server.exception.NoSuchSourceException;
 import com.ocmaker.server.exception.PermissionDeniedException;
 import com.ocmaker.server.mapper.OcMapper;
 import com.ocmaker.server.service.OcService;
@@ -84,7 +84,7 @@ public class OcServiceImpl implements OcService {
         Oc oc = ocMapper.selectOcDetail(ocId);
         //如果请求的资源不存在，抛出异常
         if (oc == null) {
-            throw new NoSuchOcException(ErrorTypes.NO_SUCH_OC);
+            throw new NoSuchSourceException(ErrorTypes.NO_SUCH_OC);
         }
         //如果请求了不是自己的oc，抛出异常
         if (!Objects.equals(oc.getUserUid(), userUId)) {
@@ -140,13 +140,20 @@ public class OcServiceImpl implements OcService {
         return true;
     }
 
+    /**
+     * 删除id为ocid的oc
+     * @param ocId
+     * @param userUid
+     * @return
+     */
     @Override
     public Boolean deleteOc(Integer ocId, Integer userUid) {
-        if (!Objects.equals(userUid, ocMapper.selectUserUidByOcId(ocId))) {
+        Integer OcUserId = ocMapper.selectUserUidByOcId(ocId);
+        if (!Objects.equals(userUid, OcUserId)) {
             throw new PermissionDeniedException(ErrorTypes.PERMISSION_DENIED);
         }
-        if (userUid == null) {
-            throw new NoSuchOcException(ErrorTypes.NO_SUCH_OC);
+        if (OcUserId == null) {
+            throw new NoSuchSourceException(ErrorTypes.NO_SUCH_OC);
         }
 
         ocMapper.deleteOc(ocId);

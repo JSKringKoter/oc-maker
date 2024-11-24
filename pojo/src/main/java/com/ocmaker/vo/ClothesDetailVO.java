@@ -1,18 +1,17 @@
-package com.ocmaker.entity;
-
+package com.ocmaker.vo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+
 
 @Data
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
-public class Clothes {
+public class ClothesDetailVO {
     private Integer clothesId;
     private String name;
     private String describe;
@@ -25,7 +24,5 @@ public class Clothes {
     private String legDecorate;
     private String shoes;
     private String otherDecorate;
-    private LocalDateTime createTime;
-    private LocalDateTime updateTime;
     private Integer clothesOcId;
 }

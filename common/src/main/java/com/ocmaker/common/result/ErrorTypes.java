@@ -7,4 +7,6 @@ public class ErrorTypes {
     public static String NO_SUCH_OC = "NO_SUCH_OC";
 
     public static String PERMISSION_DENIED = "PERMISSION_DENIED";
+
+    public static String NO_SUCH_CLOTHES = "NO_SUCH_CLOTHES";
 }
