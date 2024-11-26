@@ -167,4 +167,36 @@ public class ClothesServiceImpl implements ClothesService {
         clothesMapper.deleteClothesByClothesId(vo.getClothesId());
         return true;
     }
+
+    /**
+     * 根据clothesId更新imgurl
+     * @param imgUrl
+     * @param clothesId
+     * @return
+     */
+    @Override
+    public boolean updateUrl(String imgUrl, Integer clothesId) {
+        clothesMapper.updateImgUrl(imgUrl, clothesId);
+        return true;
+    }
+
+
+    /**
+     * 根据clothesId查询imgUrl
+     * @param clothesId
+     * @return
+     */
+    @Override
+    public String selectImgUrlByClothesId(Integer clothesId) {
+        return clothesMapper.selectImgUrlByClothesId(clothesId);
+    }
+
+    /**
+     * 根据clothesId清空imgUrl
+     * @param clothesId
+     */
+    @Override
+    public void makeImgUrlNullByClothesId(Integer clothesId) {
+        clothesMapper.makeImgUrlNullByClothesId(clothesId);
+    }
 }

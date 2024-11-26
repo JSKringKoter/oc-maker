@@ -40,4 +40,13 @@ public interface ClothesMapper {
 
     @Delete("delete from oc_maker.clothes where clothes_id = #{clothesId}")
     public void deleteClothesByClothesId(Integer clothesId);
+
+    @Update("update oc_maker.clothes set img_url = null where clothes_id = #{clothesId}")
+    public void makeImgUrlNullByClothesId(Integer clothesId);
+
+    @Update("update oc_maker.clothes set img_url = #{imgUrl} where clothes_id = #{clothesId}")
+    public void updateImgUrl(String imgUrl, Integer clothesId);
+
+    @Select("select img_url from oc_maker.clothes where clothes_id = #{clothesId}")
+    public String selectImgUrlByClothesId(Integer clothesId);
 }

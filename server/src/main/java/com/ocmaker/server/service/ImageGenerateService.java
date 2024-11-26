@@ -35,7 +35,7 @@ public class ImageGenerateService {
 
         Oc oc = ocMapper.selectOcDetail(info.getClothesOcId());
         Clothes clothes = clothesMapper.selectClothesByClothesId(info.getClothesId());
-        String prompt = oc.toString() + clothes.toString();
+        String prompt = "oc.toString() + clothes.toString()";
 
         return prompt;
     }

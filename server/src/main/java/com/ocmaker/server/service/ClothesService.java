@@ -15,4 +15,11 @@ public interface ClothesService {
     public boolean updateClothesDetailInfo(ClothesDetailVO vo);
 
     public boolean deleteClothes(ClothesBaseInfoVO vo);
+
+    public boolean updateUrl(String imgUrl, Integer clothesId);
+
+    public String selectImgUrlByClothesId(Integer clothesId);
+
+    public void makeImgUrlNullByClothesId(Integer clothesId);
+
 }

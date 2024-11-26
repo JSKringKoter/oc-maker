@@ -1,6 +1,7 @@
 package com.ocmaker.server.handler;
 
 import com.ocmaker.common.result.Result;
+import com.ocmaker.server.exception.FileUploadFailException;
 import com.ocmaker.server.exception.LoginFailException;
 import com.ocmaker.server.exception.NoSuchSourceException;
 import com.ocmaker.server.exception.PermissionDeniedException;
@@ -45,6 +46,12 @@ public class GlobalExceptionHandler {
     public ResponseEntity<PermissionDeniedException> deniedExceptionResponseEntity(Exception ex) {
         ex.printStackTrace();
         return Result.error(403);
+    }
+
+    @ExceptionHandler(FileUploadFailException.class)
+    public ResponseEntity<FileUploadFailException> fileUploadFailExceptionResponseEntity(Exception ex) {
+        ex.printStackTrace();;
+        return Result.error(500);
     }
 
 }
