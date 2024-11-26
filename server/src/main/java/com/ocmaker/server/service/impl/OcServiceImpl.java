@@ -2,11 +2,15 @@ package com.ocmaker.server.service.impl;
 
 import com.ocmaker.common.result.ErrorTypes;
 import com.ocmaker.dto.OcDTO;
+import com.ocmaker.entity.Clothes;
 import com.ocmaker.entity.Oc;
 import com.ocmaker.server.exception.NoSuchSourceException;
 import com.ocmaker.server.exception.PermissionDeniedException;
+import com.ocmaker.server.mapper.ClothesMapper;
 import com.ocmaker.server.mapper.OcMapper;
+import com.ocmaker.server.service.ClothesService;
 import com.ocmaker.server.service.OcService;
+import com.ocmaker.vo.ClothesBaseInfoVO;
 import com.ocmaker.vo.OcBaseInfoVO;
 import com.ocmaker.vo.OcDetailVO;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +26,8 @@ public class OcServiceImpl implements OcService {
 
     @Autowired
     private OcMapper ocMapper;
+    @Autowired
+    private ClothesMapper clothesMapper;
 
     /*
     增加新的OC条目
@@ -154,6 +160,15 @@ public class OcServiceImpl implements OcService {
         }
         if (OcUserId == null) {
             throw new NoSuchSourceException(ErrorTypes.NO_SUCH_OC);
+        }
+
+        //查询clothesOcId为ocId的所有服装
+        List<Clothes> clothes = clothesMapper.selectAllClothesByOcId(ocId);
+        //删除属于ocid的所有服装
+        for (Clothes cloth:
+                clothes) {
+            Integer clothesId = cloth.getClothesId();
+            clothesMapper.deleteClothesByClothesId(clothesId);
         }
 
         ocMapper.deleteOc(ocId);

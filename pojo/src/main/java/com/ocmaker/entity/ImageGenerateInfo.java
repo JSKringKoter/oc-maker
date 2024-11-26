@@ -10,5 +10,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ImageGenerateInfo {
+    Integer clothesOcId;
+    Integer clothesId;
     String apiKey;
 }

@@ -119,4 +119,52 @@ public class ClothesServiceImpl implements ClothesService {
 
         return detailVO;
     }
+
+
+    /**
+     * 更新服装详情
+     * @param vo
+     * @return
+     */
+    @Override
+    public boolean updateClothesDetailInfo(ClothesDetailVO vo) {
+        Integer OcId = clothesMapper.selectClothesOcIdByClothesId(vo.getClothesId());
+        if (!Objects.equals(OcId, vo.getClothesOcId())) {
+            throw new PermissionDeniedException(ErrorTypes.PERMISSION_DENIED);
+        }
+        Clothes clothes = Clothes.builder()
+                .clothesId(vo.getClothesId())
+                .name(vo.getName())
+                .describe(vo.getDescribe())
+                .hat(vo.getHat())
+                .faceDecorate(vo.getFaceDecorate())
+                .uppers(vo.getUppers())
+                .belt(vo.getBelt())
+                .bottoms(vo.getBottoms())
+                .legDecorate(vo.getLegDecorate())
+                .shoes(vo.getShoes())
+                .otherDecorate(vo.getOtherDecorate())
+                .updateTime(LocalDateTime.now())
+                .build();
+
+        clothesMapper.updateClothesDetailInfo(clothes);
+        return true;
+    }
+
+
+    /**
+     * 根据clothesId删除服装
+     * @param vo
+     * @return
+     */
+    @Override
+    public boolean deleteClothes(ClothesBaseInfoVO vo) {
+        Integer OcId = clothesMapper.selectClothesOcIdByClothesId(vo.getClothesId());
+        if (!Objects.equals(OcId, vo.getClothesOcId())) {
+            throw new PermissionDeniedException(ErrorTypes.PERMISSION_DENIED);
+        }
+
+        clothesMapper.deleteClothesByClothesId(vo.getClothesId());
+        return true;
+    }
 }

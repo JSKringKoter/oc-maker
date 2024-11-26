@@ -30,4 +30,6 @@ public class Oc {
     private LocalDateTime createTime;   //创建时间
     private LocalDateTime updateTime;   //更新时间
     private Integer userUid;       // 隶属于用户的id
+
+
 }

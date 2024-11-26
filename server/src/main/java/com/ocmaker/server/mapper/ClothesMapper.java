@@ -2,8 +2,11 @@ package com.ocmaker.server.mapper;
 
 import com.ocmaker.entity.Clothes;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 @Mapper
 public interface ClothesMapper {
@@ -19,4 +22,22 @@ public interface ClothesMapper {
 
     @Select("select * from oc_maker.clothes where clothes_id = #{clothesId}")
     public Clothes selectClothesByClothesId(Integer clothesId);
+
+    @Update("update oc_maker.clothes set " +
+            "name = #{name}," +
+            "`describe` = #{describe}," +
+            "hat = #{hat}," +
+            "face_decorate = #{faceDecorate}," +
+            "uppers = #{uppers}," +
+            "belt = #{belt}," +
+            "bottoms = #{bottoms}," +
+            "leg_decorate = #{legDecorate}," +
+            "shoes = #{shoes}," +
+            "other_decorate = #{otherDecorate}," +
+            "update_time = #{updateTime} " +
+            "where clothes_id = #{clothesId}")
+    public void updateClothesDetailInfo(Clothes clothes);
+
+    @Delete("delete from oc_maker.clothes where clothes_id = #{clothesId}")
+    public void deleteClothesByClothesId(Integer clothesId);
 }

@@ -11,4 +11,8 @@ public interface ClothesService {
     public void addNewClothes(ClothesDetailVO clothesDetail);
 
     public ClothesDetailVO selectClothesDetail(ClothesBaseInfoVO vo);
+
+    public boolean updateClothesDetailInfo(ClothesDetailVO vo);
+
+    public boolean deleteClothes(ClothesBaseInfoVO vo);
 }

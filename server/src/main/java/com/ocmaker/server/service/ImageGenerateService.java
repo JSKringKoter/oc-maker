@@ -1,11 +1,20 @@
 package com.ocmaker.server.service;
 
+import com.ocmaker.entity.Clothes;
+import com.ocmaker.entity.ImageGenerateInfo;
+import com.ocmaker.entity.Oc;
+import com.ocmaker.server.mapper.ClothesMapper;
+import com.ocmaker.server.mapper.OcMapper;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.client.reactive.ReactorClientHttpConnector;
-import org.springframework.stereotype.Service;
 
 import java.net.InetSocketAddress;
 import java.util.concurrent.ThreadLocalRandom;
+
+import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 import reactor.netty.http.client.HttpClient;
@@ -16,6 +25,20 @@ import reactor.netty.transport.ProxyProvider;
 public class ImageGenerateService {
 
     private final WebClient webClient;
+
+    @Autowired
+    private OcMapper ocMapper;
+    @Autowired
+    private ClothesMapper clothesMapper;
+
+    public String getPromptById(ImageGenerateInfo info) {
+
+        Oc oc = ocMapper.selectOcDetail(info.getClothesOcId());
+        Clothes clothes = clothesMapper.selectClothesByClothesId(info.getClothesId());
+        String prompt = oc.toString() + clothes.toString();
+
+        return prompt;
+    }
 
     public ImageGenerateService(WebClient.Builder webClientBuilder) {
         this.webClient = webClientBuilder
@@ -47,7 +70,7 @@ public class ImageGenerateService {
                         "height": 1216,
                         "scale": 5,
                         "sampler": "k_euler_ancestral",
-                        "steps": 5,
+                        "steps": 20,
                         "seed": %s,
                         "n_samples": 1,
                         "ucPreset": 0,
@@ -63,9 +86,22 @@ public class ImageGenerateService {
                 .header("Authorization", "Bearer " + apiKey)
                 .header("Content-Type", "application/json")
                 .bodyValue(requestBody)
-                .retrieve()
-                .bodyToMono(byte[].class)
-                .doOnError(error -> log.error("图片生成失败: ", error));
+                .exchangeToMono(response -> {
+                    HttpStatusCode status = response.statusCode();
+                    log.info("响应状态码: {}", status.value());
+
+                    if (status.equals(HttpStatus.UNAUTHORIZED)) {
+                        log.error("认证失败: 401 Unauthorized");
+                        return Mono.error(new RuntimeException("API认证失败"));
+                    }
+
+                    if (status.is4xxClientError() || status.is5xxServerError()) {
+                        return response.bodyToMono(String.class)
+                                .flatMap(error -> Mono.error(new RuntimeException("请求失败: " + status.value() + ", 错误信息: " + error)));
+                    }
+
+                    return response.bodyToMono(byte[].class);
+                });
     }
 
 }

@@ -37,7 +37,7 @@ public class ClothesController {
      * @return
      */
     @PostMapping("/new")
-    public Result addNewClothes(@RequestBody ClothesDetailVO vo) {
+    public Result<?> addNewClothes(@RequestBody ClothesDetailVO vo) {
         log.info("新增ocid为{}的服装：{}", vo.getClothesOcId(), vo);
         clothesService.addNewClothes(vo);
         return Result.success();
@@ -55,6 +55,28 @@ public class ClothesController {
         return Result.success(detailVO);
     }
 
+    /**
+     * 根据clothesID删除服装
+     * @param vo
+     * @return
+     */
+    @PostMapping("/update")
+    public Result<?> updateClothesDetailInfo(@RequestBody ClothesDetailVO vo) {
+        log.info("将ocid为{}的clothesid为{}的服装更新为{}", vo.getClothesOcId(), vo.getClothesId(), vo);
 
+        return clothesService.updateClothesDetailInfo(vo) ? Result.success() : Result.error("");
+    }
+
+    /**
+     * 根据clothesID删除服装
+     * @param vo
+     * @return
+     */
+    @PostMapping("/delete")
+    public Result<?> deleteClothes(@RequestBody ClothesBaseInfoVO vo) {
+        log.info("将ocid为{}的clothesId为{}的服装删除", vo.getClothesOcId(), vo.getClothesId());
+
+        return clothesService.deleteClothes(vo) ? Result.success() : Result.error("");
+    }
 
 }
