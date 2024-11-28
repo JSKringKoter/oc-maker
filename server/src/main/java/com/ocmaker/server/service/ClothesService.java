@@ -14,7 +14,7 @@ public interface ClothesService {
 
     public boolean updateClothesDetailInfo(ClothesDetailVO vo);
 
-    public boolean deleteClothes(ClothesBaseInfoVO vo);
+    public boolean deleteClothes(ClothesBaseInfoVO vo) throws Exception;
 
     public boolean updateUrl(String imgUrl, Integer clothesId);
 

@@ -1,10 +1,7 @@
 package com.ocmaker.server.handler;
 
 import com.ocmaker.common.result.Result;
-import com.ocmaker.server.exception.FileUploadFailException;
-import com.ocmaker.server.exception.LoginFailException;
-import com.ocmaker.server.exception.NoSuchSourceException;
-import com.ocmaker.server.exception.PermissionDeniedException;
+import com.ocmaker.server.exception.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -48,9 +45,36 @@ public class GlobalExceptionHandler {
         return Result.error(403);
     }
 
+    /**
+     * 用来处理文件上传失败的问题
+     * @param ex
+     * @return
+     */
     @ExceptionHandler(FileUploadFailException.class)
     public ResponseEntity<FileUploadFailException> fileUploadFailExceptionResponseEntity(Exception ex) {
-        ex.printStackTrace();;
+        ex.printStackTrace();
+        return Result.error(500);
+    }
+
+    /**
+     * 用来处理远程文件删除失败的问题
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(FileDeleteFailException.class)
+    public ResponseEntity<FileDeleteFailException> fileDeleteFailExceptionResponseEntity(Exception ex) {
+        ex.printStackTrace();
+        return Result.error(500);
+    }
+
+    /**
+     * 图像生成失败
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(GenerateFailException.class)
+    public ResponseEntity<GenerateFailException> imageGenerateFailExceptionResponseEntity(Exception ex) {
+        ex.printStackTrace();
         return Result.error(500);
     }
 

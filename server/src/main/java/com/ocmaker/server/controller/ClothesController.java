@@ -73,7 +73,7 @@ public class ClothesController {
      * @return
      */
     @PostMapping("/delete")
-    public Result<?> deleteClothes(@RequestBody ClothesBaseInfoVO vo) {
+    public Result<?> deleteClothes(@RequestBody ClothesBaseInfoVO vo) throws Exception {
         log.info("将ocid为{}的clothesId为{}的服装删除", vo.getClothesOcId(), vo.getClothesId());
 
         return clothesService.deleteClothes(vo) ? Result.success() : Result.error("");

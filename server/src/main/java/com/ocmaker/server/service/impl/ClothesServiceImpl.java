@@ -12,6 +12,7 @@ import com.ocmaker.server.exception.NoSuchSourceException;
 import com.ocmaker.server.exception.PermissionDeniedException;
 import com.ocmaker.server.mapper.ClothesMapper;
 import com.ocmaker.server.mapper.OcMapper;
+import com.ocmaker.server.oss.OssUtils;
 import com.ocmaker.server.service.ClothesService;
 import com.ocmaker.vo.ClothesBaseInfoVO;
 import com.ocmaker.vo.ClothesDetailVO;
@@ -37,10 +38,10 @@ public class ClothesServiceImpl implements ClothesService {
     public List<ClothesBaseInfoVO> listAllClothesBaseInfo(Integer ocId, Integer userUid) {
         Integer OcUserId = ocMapper.selectUserUidByOcId(ocId);
         if (!Objects.equals(userUid, OcUserId)) {
-            throw new PermissionDeniedException(ErrorTypes.PERMISSION_DENIED);
+            throw new PermissionDeniedException();
         }
         if (OcUserId == null) {
-            throw new NoSuchSourceException(ErrorTypes.NO_SUCH_OC);
+            throw new NoSuchSourceException();
         }
 
         List<Clothes> clothes = clothesMapper.selectAllClothesByOcId(ocId);
@@ -95,11 +96,11 @@ public class ClothesServiceImpl implements ClothesService {
     public ClothesDetailVO selectClothesDetail(ClothesBaseInfoVO vo) {
         Integer OcId = clothesMapper.selectClothesOcIdByClothesId(vo.getClothesId());
         if (!Objects.equals(OcId, vo.getClothesOcId())) {
-            throw new PermissionDeniedException(ErrorTypes.PERMISSION_DENIED);
+            throw new PermissionDeniedException();
         }
         Clothes clothes = clothesMapper.selectClothesByClothesId(vo.getClothesId());
         if (clothes == null) {
-            throw new NoSuchSourceException(ErrorTypes.NO_SUCH_CLOTHES);
+            throw new NoSuchSourceException();
         }
 
         ClothesDetailVO detailVO = ClothesDetailVO.builder()
@@ -130,7 +131,7 @@ public class ClothesServiceImpl implements ClothesService {
     public boolean updateClothesDetailInfo(ClothesDetailVO vo) {
         Integer OcId = clothesMapper.selectClothesOcIdByClothesId(vo.getClothesId());
         if (!Objects.equals(OcId, vo.getClothesOcId())) {
-            throw new PermissionDeniedException(ErrorTypes.PERMISSION_DENIED);
+            throw new PermissionDeniedException();
         }
         Clothes clothes = Clothes.builder()
                 .clothesId(vo.getClothesId())
@@ -153,17 +154,17 @@ public class ClothesServiceImpl implements ClothesService {
 
 
     /**
-     * 根据clothesId删除服装
+     * 根据clothesId删除服装，同时删除oss中储存的文件
      * @param vo
      * @return
      */
     @Override
-    public boolean deleteClothes(ClothesBaseInfoVO vo) {
+    public boolean deleteClothes(ClothesBaseInfoVO vo) throws Exception {
         Integer OcId = clothesMapper.selectClothesOcIdByClothesId(vo.getClothesId());
         if (!Objects.equals(OcId, vo.getClothesOcId())) {
-            throw new PermissionDeniedException(ErrorTypes.PERMISSION_DENIED);
+            throw new PermissionDeniedException();
         }
-
+        OssUtils.deleteFile(clothesMapper.selectImgUrlByClothesId(vo.getClothesId()));
         clothesMapper.deleteClothesByClothesId(vo.getClothesId());
         return true;
     }

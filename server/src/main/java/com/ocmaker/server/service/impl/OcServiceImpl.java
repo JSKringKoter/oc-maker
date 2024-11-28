@@ -90,11 +90,11 @@ public class OcServiceImpl implements OcService {
         Oc oc = ocMapper.selectOcDetail(ocId);
         //如果请求的资源不存在，抛出异常
         if (oc == null) {
-            throw new NoSuchSourceException(ErrorTypes.NO_SUCH_OC);
+            throw new NoSuchSourceException();
         }
         //如果请求了不是自己的oc，抛出异常
         if (!Objects.equals(oc.getUserUid(), userUId)) {
-            throw new PermissionDeniedException(ErrorTypes.PERMISSION_DENIED);
+            throw new PermissionDeniedException();
         }
         OcDetailVO ocDetailVO = OcDetailVO.builder()
                 .name(oc.getName())
@@ -156,10 +156,10 @@ public class OcServiceImpl implements OcService {
     public Boolean deleteOc(Integer ocId, Integer userUid) {
         Integer OcUserId = ocMapper.selectUserUidByOcId(ocId);
         if (!Objects.equals(userUid, OcUserId)) {
-            throw new PermissionDeniedException(ErrorTypes.PERMISSION_DENIED);
+            throw new PermissionDeniedException();
         }
         if (OcUserId == null) {
-            throw new NoSuchSourceException(ErrorTypes.NO_SUCH_OC);
+            throw new NoSuchSourceException();
         }
 
         //查询clothesOcId为ocId的所有服装

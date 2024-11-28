@@ -42,7 +42,9 @@ public class Result<T> implements Serializable {
     }
 
     public static ResponseEntity error(int errorCode) {
-        return ResponseEntity.status(errorCode).build();
+        return ResponseEntity
+                .status(errorCode)
+                .build();
     }
 
 }

@@ -46,6 +46,6 @@ public class LoginController {
         }
 
         //登陆失败，抛出错误信息，由全局异常处理器解决
-        throw new LoginFailException(ErrorTypes.ACCOUNT_OR_PASSWORD_ERROR);
+        throw new LoginFailException();
     }
 }
