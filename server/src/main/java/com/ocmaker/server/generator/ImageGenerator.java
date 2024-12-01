@@ -22,6 +22,7 @@ import java.util.concurrent.ThreadLocalRandom;
 public class ImageGenerator {
 
     private final String url = "https://image.novelai.net/ai/generate-image";
+    private final String checkUrl = "https://api.novelai.net/user/data";
 
     /**
      * 图像生成
@@ -36,7 +37,7 @@ public class ImageGenerator {
         // 请求体
         String requestBody = String.format("""
                 {
-                    "input": "%s",
+                    "input": "solo, straight-on, %s",
                     "model": "nai-diffusion-3",
                     "action": "generate",
                     "parameters": {
@@ -50,7 +51,7 @@ public class ImageGenerator {
                         "ucPreset": 0,
                         "uc": "lowres, bad anatomy, bad hands, text, error, missing fingers, extra digit, fewer digits, cropped, worst quality, low quality, normal quality, jpeg artifacts, signature, watermark, username, blurry",
                         "cfg_rescale": 0,
-                        "negative_prompt": "{{nsfw}}, nude, {{{mini_person}}}, {{{minigirl}}}, cat, animal"
+                        "negative_prompt": "{{nsfw}}, nude, {{{mini_person}}}, {{{mini_girl}}}, cat, animal, pov hand, "
                     }
                 }
                 """, prompt, seed);
@@ -64,7 +65,14 @@ public class ImageGenerator {
                 .execute();
         //拿到状态码和zipBytes
         int status = response.getStatus();
-        log.info("Novelai的状态码为{}", status);
+        if (status == 401) {
+            log.info("用户提供的apikey无效");
+            throw new GenerateFailException("提供的apiKey无效，请检查apiKey是否过期。");
+        }
+        if (status == 429) {
+            log.info("并行错误");
+            throw new GenerateFailException("图片生成正在被占用，请稍后再试。");
+        }
         byte[] zipBytes = response.bodyBytes();
 
         if (status == 200) {
@@ -82,11 +90,26 @@ public class ImageGenerator {
 
             return fileName;
         } else {
-            throw new GenerateFailException();
+            throw new GenerateFailException("NovelAI服务器出错，请联系管理员");
         }
     }
 
 
+    /**
+     * 检查apiKey是否有效
+     * @param apiKey
+     */
+    public void checkApiKey(String apiKey) {
+        HttpResponse response = HttpRequest.get(checkUrl)
+                .header("Authorization", "Bearer " + apiKey)
+                .header("Content-Type", "application/json")
+                .setProxy(new Proxy(Proxy.Type.HTTP,  new InetSocketAddress("127.0.0.1", 7890)))
+                .execute();
+        if (response.getStatus() != 200) {
+            throw new GenerateFailException("提供的apiKey无效，请检查apiKey是否过期。");
+        }
+    }
+//    这里是原来使用WebClient构造请求的代码
 //    private final WebClient webClient;
 //
 //    /**

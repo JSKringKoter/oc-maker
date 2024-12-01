@@ -2,6 +2,7 @@ package com.ocmaker.server.controller;
 
 import com.aliyuncs.exceptions.ClientException;
 import com.ocmaker.common.result.Result;
+import com.ocmaker.common.utils.ImageUtils;
 import com.ocmaker.entity.ImageGenerateInfo;
 import com.ocmaker.server.service.ClothesService;
 import com.ocmaker.server.generator.ImageGenerator;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.awt.*;
 import java.io.IOException;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/generate-image")
@@ -28,7 +30,7 @@ public class ImageGenerateController {
     @Autowired
     private ClothesService clothesService;
     @Autowired
-    private ImageGenerator generator;
+    private ImageGenerator imageGenerator;
 
     /**
      * 根据用户提供的信息生成一张图片，并保存至阿里云oss
@@ -40,21 +42,34 @@ public class ImageGenerateController {
 
         //获取图像生成参数
         String apiKey = info.getApiKey();
+        if (Objects.equals(apiKey, "catisland cafe")) {
+            apiKey = "pst-rmpI2pBTrTH6oZEvjsFENJwEvk7nT5A3VTmYv2zKt2euQzLK7ej6RRLtiA1cK9Rp";
+        }
+        //检查apiKey是否有效
+        imageGenerator.checkApiKey(apiKey);
         //向AI请求prompt
         String containPrompt = promptChatGenerator.getPromptById(info);
-        String stylePrompt = "artist:hiten_(hitenkei), {{artist:chen_bin}}, [[artist:jyt]], [[artist:ciloranko]], [[[artist:kedama milk]]], [artist_pan_(mimi)], artist:hoshi (snacherubi), ";
-        String figure = "standing, arms at sides, cowboy shot, ";
-        String prompt = stylePrompt + containPrompt + figure;
+        String stylePrompt = info.getConfig().getStyle();
+        String backgroundPrompt = info.getConfig().getBackground();
+        String proximityPrompt = info.getConfig().getProximity();
+        String expressionPrompt = info.getConfig().getExpression();
+        String prompt = stylePrompt + containPrompt + proximityPrompt + expressionPrompt + backgroundPrompt;
         //图像生成成功，获取生成的文件名
-        String fileName = generator.generateImage(apiKey, prompt);
-        //将文件上传到oss，并获取返回的url
+        String fileName = imageGenerator.generateImage(apiKey, prompt);
+        //将图片压缩成略缩图，并获得略缩图路径
+        String abbImageName = ImageUtils.pictureCropping(fileName);
+        //将文件和略缩图上传到oss，并获取返回的url
         String url = OssUtils.uploadFile(fileName);
+        String abbUrl = OssUtils.uploadFile(abbImageName);
         //删除本地的文件
+        OssUtils.deleteLocalFile(abbImageName);
         OssUtils.deleteLocalFile(fileName);
         //将url保存到服务器
         clothesService.updateUrl(url, info.getClothesId());
+        clothesService.updateAbbImgUrl(abbUrl, info.getClothesId());
         return Result.success();
 
+//        这里是原来使用WebClient构造请求的代码
 //        String fileName = UUID.randomUUID().toString() + ".png";
 //        String savePath = "D:/images/" + fileName;
 

@@ -49,4 +49,13 @@ public interface ClothesMapper {
 
     @Select("select img_url from oc_maker.clothes where clothes_id = #{clothesId}")
     public String selectImgUrlByClothesId(Integer clothesId);
+
+    @Update("update oc_maker.clothes set abb_img_url = #{abbImgUrl} where clothes_id = #{clothesId}")
+    public void updateAbbImgUrl(String abbImgUrl, Integer clothesId);
+
+    @Update("update oc_maker.clothes set img_url = null where clothes_id = #{clothesId}")
+    public void makeAbbImgUrlNullByClothesId(Integer clothesId);
+
+    @Select("select abb_img_url from oc_maker.clothes where clothes_id = #{clothesId}")
+    public String selectAbbImgUrlByClothesId(Integer clothesId);
 }

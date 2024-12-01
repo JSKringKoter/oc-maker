@@ -1,6 +1,6 @@
 package com.ocmaker.server.service.impl;
 
-import com.ocmaker.common.result.ErrorTypes;
+
 import com.ocmaker.entity.Clothes;
 
 import java.time.LocalDateTime;
@@ -50,8 +50,10 @@ public class ClothesServiceImpl implements ClothesService {
              clothes) {
             ClothesBaseInfoVO baseInfoVO = ClothesBaseInfoVO.builder()
                     .clothesId(clothes1.getClothesId())
+                    .clothesOcId(clothes1.getClothesOcId())
                     .name(clothes1.getName())
                     .imgUrl(clothes1.getImgUrl())
+                    .abbImgUrl(clothes1.getAbbImgUrl())
                     .describe(clothes1.getDescribe())
                     .build();
             baseInfoVOS.add(baseInfoVO);
@@ -164,21 +166,25 @@ public class ClothesServiceImpl implements ClothesService {
         if (!Objects.equals(OcId, vo.getClothesOcId())) {
             throw new PermissionDeniedException();
         }
-        OssUtils.deleteFile(clothesMapper.selectImgUrlByClothesId(vo.getClothesId()));
+        if (vo.getImgUrl() != null) {
+            OssUtils.deleteFile(clothesMapper.selectImgUrlByClothesId(vo.getClothesId()));
+        }
+        if (vo.getAbbImgUrl() != null) {
+            OssUtils.deleteFile(clothesMapper.selectAbbImgUrlByClothesId(vo.getClothesId()));
+        }
         clothesMapper.deleteClothesByClothesId(vo.getClothesId());
         return true;
     }
 
     /**
      * 根据clothesId更新imgurl
+     *
      * @param imgUrl
      * @param clothesId
-     * @return
      */
     @Override
-    public boolean updateUrl(String imgUrl, Integer clothesId) {
+    public void updateUrl(String imgUrl, Integer clothesId) {
         clothesMapper.updateImgUrl(imgUrl, clothesId);
-        return true;
     }
 
 
@@ -199,5 +205,16 @@ public class ClothesServiceImpl implements ClothesService {
     @Override
     public void makeImgUrlNullByClothesId(Integer clothesId) {
         clothesMapper.makeImgUrlNullByClothesId(clothesId);
+    }
+
+
+    /**
+     * 更新add_img_url
+     * @param addImgUrl
+     * @param clothesId
+     */
+    @Override
+    public void updateAbbImgUrl(String addImgUrl, Integer clothesId) {
+        clothesMapper.updateAbbImgUrl(addImgUrl, clothesId);
     }
 }

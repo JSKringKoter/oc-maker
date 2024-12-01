@@ -47,4 +47,10 @@ public class Result<T> implements Serializable {
                 .build();
     }
 
+    public static ResponseEntity error(int errorCode, String msg) {
+        return ResponseEntity
+                .status(errorCode)
+                .body(msg);
+    }
+
 }

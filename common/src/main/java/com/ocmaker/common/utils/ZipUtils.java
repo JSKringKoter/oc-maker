@@ -6,6 +6,13 @@ import java.io.IOException;
 import java.util.zip.ZipInputStream;
 
 public class ZipUtils {
+
+    /**
+     * 解压缩工具
+     * @param zipBytes
+     * @return
+     * @throws IOException
+     */
     public static byte[] unZip(byte[] zipBytes) throws IOException {
         byte[] imageBytes;
         try (ByteArrayInputStream bis = new ByteArrayInputStream(zipBytes);

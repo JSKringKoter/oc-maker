@@ -13,6 +13,7 @@ public class ClothesBaseInfoVO {
     Integer clothesId;
     Integer clothesOcId;
     String imgUrl;
+    String abbImgUrl;
     String name;
     String describe;
 }

@@ -18,6 +18,7 @@ public class Clothes {
     private String name;
     private String describe;
     private String imgUrl;
+    private String abbImgUrl;
     private String hat;
     private String faceDecorate;
     private String uppers;

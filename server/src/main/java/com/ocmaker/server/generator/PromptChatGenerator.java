@@ -31,7 +31,7 @@ public class PromptChatGenerator {
 
     public String pushToChat(String userPrompt) {
 
-        String systemPrompt = "下面将会给出非常高级的图片描述，丰富这段文本的表现力并转化为保留较多关键信息的关键词组，按照画面质量描述与风格词汇、主体描述、细节描述的顺序以逗号分隔。文本以特征:特征值组成，请将它们转化成tag，每个tag应该在一到三个词汇左右，并精准地描绘一项特征。将年龄转化为描述年龄的tag，将体重、身高等数值转化为描述身材的tag，总体输出小于100个词汇，且不要太长，英文小写输出，合并为一行。tag中不能有-或_。如果出现不是人类的种族，请描绘其特征（例如猫娘会有cat ear, cat tail):";
+        String systemPrompt = "下面将会给出非常高级的图片描述，丰富这段文本的表现力并转化为保留较多关键信息的关键词组，按照画面质量描述与风格词汇、主体描述、细节描述的顺序以逗号分隔。文本以特征:特征值组成，请将它们转化成tag，每个tag应该在一到两个词汇左右，并精准地描绘一项特征。将年龄转化为描述年龄的tag，将体重、身高等数值转化为描述身材的tag，总体输出小于100个词汇，且不要太长，英文小写输出，合并为一行。tag中不能有-或_。如果出现不是人类的种族，请描绘其特征（例如猫娘会有cat ear, cat tail):";
         String requestBody = String.format("""
                 {
                      "model": "deepseek-chat",
@@ -58,12 +58,11 @@ public class PromptChatGenerator {
                 .getStr("content");
         //获得http状态码
         int status = response.getStatus();
-        log.info("Chat状态码为：{}", status);
         if (status == 200) {
             log.info("chat返回结果为：{}", result);
             return result;
         } else {
-            throw new GenerateFailException();
+            throw new GenerateFailException("Chat服务器出错，请联系管理员");
         }
     }
 

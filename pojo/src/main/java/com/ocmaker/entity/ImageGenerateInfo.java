@@ -10,7 +10,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class ImageGenerateInfo {
-    Integer clothesOcId;
-    Integer clothesId;
-    String apiKey;
+    private Integer clothesOcId;
+    private Integer clothesId;
+    private String apiKey;
+    private AiGenerateConfig config;
 }

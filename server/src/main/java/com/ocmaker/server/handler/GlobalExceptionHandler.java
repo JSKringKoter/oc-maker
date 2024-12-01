@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(LoginFailException.class)
-    public ResponseEntity<LoginFailException> loginFailExceptionResponseEntity(Exception ex) {
+    public ResponseEntity loginFailExceptionResponseEntity(Exception ex) {
         ex.printStackTrace();
         return Result.error(401);
     }
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(NoSuchSourceException.class)
-    public ResponseEntity<NoSuchSourceException> noSuchOcExceptionResponseEntity(Exception ex) {
+    public ResponseEntity noSuchOcExceptionResponseEntity(Exception ex) {
         ex.printStackTrace();
         return Result.error(404);
     }
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(PermissionDeniedException.class)
-    public ResponseEntity<PermissionDeniedException> deniedExceptionResponseEntity(Exception ex) {
+    public ResponseEntity deniedExceptionResponseEntity(Exception ex) {
         ex.printStackTrace();
         return Result.error(403);
     }
@@ -51,7 +51,7 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(FileUploadFailException.class)
-    public ResponseEntity<FileUploadFailException> fileUploadFailExceptionResponseEntity(Exception ex) {
+    public ResponseEntity fileUploadFailExceptionResponseEntity(Exception ex) {
         ex.printStackTrace();
         return Result.error(500);
     }
@@ -62,20 +62,21 @@ public class GlobalExceptionHandler {
      * @return
      */
     @ExceptionHandler(FileDeleteFailException.class)
-    public ResponseEntity<FileDeleteFailException> fileDeleteFailExceptionResponseEntity(Exception ex) {
+    public ResponseEntity fileDeleteFailExceptionResponseEntity(Exception ex) {
         ex.printStackTrace();
         return Result.error(500);
     }
 
     /**
      * 图像生成失败
+     *
      * @param ex
      * @return
      */
     @ExceptionHandler(GenerateFailException.class)
-    public ResponseEntity<GenerateFailException> imageGenerateFailExceptionResponseEntity(Exception ex) {
+    public ResponseEntity imageGenerateFailExceptionResponseEntity(Exception ex) {
         ex.printStackTrace();
-        return Result.error(500);
+        return Result.error(500, ex.getMessage());
     }
 
 }
