@@ -120,10 +120,13 @@ public class ImageGenerateController {
     @PostMapping("/delete")
     public Result<?> deleteImage(@RequestBody ImageGenerateInfo info) throws Exception {
         String url = clothesService.selectImgUrlByClothesId(info.getClothesId());
+        String abbUrl = clothesService.selectImgUrlByClothesId(info.getClothesId());
         //删除阿里云oss中的存档
         OssUtils.deleteFile(url);
+        OssUtils.deleteFile(abbUrl);
         //删除数据库中的条目
         clothesService.makeImgUrlNullByClothesId(info.getClothesId());
+        clothesService.makeAbbImgUrlNullByClothesId(info.getClothesId());
         return Result.success();
     }
 }

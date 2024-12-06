@@ -55,12 +55,18 @@ public class ClothesServiceImpl implements ClothesService {
                     .imgUrl(clothes1.getImgUrl())
                     .abbImgUrl(clothes1.getAbbImgUrl())
                     .describe(clothes1.getDescribe())
+                    .isCollect(clothes1.isCollect())
                     .build();
             baseInfoVOS.add(baseInfoVO);
         }
         return baseInfoVOS;
     }
 
+    @Override
+    public boolean setFavouriteClothes(Integer ocId, Integer clothesId) {
+        ocMapper.setFavouriteClothesById(clothesId, ocId);
+        return true;
+    }
 
     /**
      * 新增clothes
@@ -117,6 +123,7 @@ public class ClothesServiceImpl implements ClothesService {
                 .legDecorate(clothes.getLegDecorate())
                 .shoes(clothes.getShoes())
                 .otherDecorate(clothes.getOtherDecorate())
+                .isCollect(clothes.isCollect())
                 .clothesOcId(clothes.getClothesOcId())
                 .build();
 
@@ -154,6 +161,18 @@ public class ClothesServiceImpl implements ClothesService {
         return true;
     }
 
+    /**
+     * 更新isCollect
+     *
+     * @param isCollect
+     * @param clothesId
+     * @return
+     */
+    @Override
+    public boolean updateIsCollect(boolean isCollect, Integer clothesId) {
+        clothesMapper.updateIsCollect(isCollect, clothesId);
+        return true;
+    }
 
     /**
      * 根据clothesId删除服装，同时删除oss中储存的文件
@@ -199,6 +218,16 @@ public class ClothesServiceImpl implements ClothesService {
     }
 
     /**
+     * 根据clothesId查询abbUrl
+     * @param clothesId
+     * @return
+     */
+    @Override
+    public String selectAbbImgUrlByClothesId(Integer clothesId) {
+        return clothesMapper.selectAbbImgUrlByClothesId(clothesId);
+    }
+
+    /**
      * 根据clothesId清空imgUrl
      * @param clothesId
      */
@@ -207,6 +236,14 @@ public class ClothesServiceImpl implements ClothesService {
         clothesMapper.makeImgUrlNullByClothesId(clothesId);
     }
 
+    /**
+     * 根据clothesId清空abbUrl
+     * @param clothesId
+     */
+    @Override
+    public void makeAbbImgUrlNullByClothesId(Integer clothesId) {
+        clothesMapper.makeAbbImgUrlNullByClothesId(clothesId);
+    }
 
     /**
      * 更新add_img_url

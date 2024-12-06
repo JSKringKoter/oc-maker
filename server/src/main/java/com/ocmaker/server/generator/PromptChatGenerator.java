@@ -12,13 +12,7 @@ import com.ocmaker.server.mapper.ClothesMapper;
 import com.ocmaker.server.mapper.OcMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Service;
-import org.springframework.web.reactive.function.client.WebClient;
-import reactor.core.publisher.Mono;
 
 @Slf4j
 @Component
@@ -27,7 +21,7 @@ public class PromptChatGenerator {
     private OcMapper ocMapper;
     @Autowired
     private ClothesMapper clothesMapper;
-    private final String apiKey = "sk-908f93bf655241398bb813677e77745d";
+    private final String apiKey = "sk-70eded3f3cc44f0e831afebbb8b00740";
 
     public String pushToChat(String userPrompt) {
 
@@ -54,6 +48,7 @@ public class PromptChatGenerator {
         //通过json解析获得最终的result数据
         String result = resultJson.getJSONArray("choices")
                 .getJSONObject(0)
+
                 .getJSONObject("message")
                 .getStr("content");
         //获得http状态码

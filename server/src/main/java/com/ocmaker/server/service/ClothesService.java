@@ -16,13 +16,20 @@ public interface ClothesService {
 
     public boolean deleteClothes(ClothesBaseInfoVO vo) throws Exception;
 
+    public boolean updateIsCollect(boolean isCollect, Integer clothesId);
+
+    public boolean setFavouriteClothes(Integer ocId, Integer clothesId);
+
     public void updateUrl(String imgUrl, Integer clothesId);
 
     public void updateAbbImgUrl(String addImgUrl, Integer clothesId);
 
     public String selectImgUrlByClothesId(Integer clothesId);
 
+    public String selectAbbImgUrlByClothesId(Integer clothesId);
+
     public void makeImgUrlNullByClothesId(Integer clothesId);
 
+    public void makeAbbImgUrlNullByClothesId(Integer clothesId);
 
 }

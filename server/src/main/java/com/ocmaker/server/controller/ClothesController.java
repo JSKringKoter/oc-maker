@@ -7,6 +7,8 @@ import com.ocmaker.vo.ClothesBaseInfoVO;
 import java.util.List;
 
 import com.ocmaker.vo.ClothesDetailVO;
+import com.ocmaker.vo.CollectClothesVO;
+import com.ocmaker.vo.SetFavouriteVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -65,6 +67,28 @@ public class ClothesController {
         log.info("将ocid为{}的clothesid为{}的服装更新为{}", vo.getClothesOcId(), vo.getClothesId(), vo);
 
         return clothesService.updateClothesDetailInfo(vo) ? Result.success() : Result.error("");
+    }
+
+    /**
+     * 收藏或者取消收藏
+     * @param vo
+     * @return
+     */
+    @PostMapping("/collect")
+    public Result<?> collectOrUncollectClothes(@RequestBody CollectClothesVO vo) {
+        log.info("将ocid为{}的clothesid为{}的收藏属性更新为{}", vo.getClothesOcId(), vo.getClothesId(), vo.isCollect());
+        return clothesService.updateIsCollect(vo.isCollect(), vo.getClothesId()) ? Result.success() : Result.error("");
+    }
+
+    /**
+     * 修改招牌服装
+     * @param vo
+     * @return
+     */
+    @PostMapping("/setAsFavourite")
+    public Result<?> setAsFavourite(@RequestBody SetFavouriteVO vo) {
+        log.info("将ocid为{}的招牌服装修改为{}", vo.getOcId(), vo.getClothesId());
+        return clothesService.setFavouriteClothes(vo.getOcId(), vo.getClothesId()) ? Result.success() : Result.error("");
     }
 
     /**

@@ -28,6 +28,8 @@ public class OcServiceImpl implements OcService {
     private OcMapper ocMapper;
     @Autowired
     private ClothesMapper clothesMapper;
+    @Autowired
+    private ClothesService clothesService;
 
     /*
     增加新的OC条目
@@ -69,11 +71,14 @@ public class OcServiceImpl implements OcService {
         List<OcBaseInfoVO> ocBaseInfoVOS = new ArrayList<>();
         for (Oc oc:ocs
              ) {
+            String abbUrl = clothesMapper.selectAbbImgUrlByClothesId(oc.getFavouriteClothesId());
             OcBaseInfoVO v0 = OcBaseInfoVO.builder()
                     .ocId(oc.getOcId())
                     .name(oc.getName())
                     .gender(oc.getGender())
                     .age(oc.getAge())
+                    .favouriteClothesId(oc.getFavouriteClothesId())
+                    .abbUrl(abbUrl)
                     .build();
             ocBaseInfoVOS.add(v0);
         }
@@ -111,6 +116,7 @@ public class OcServiceImpl implements OcService {
                 .personality(oc.getPersonality())
                 .skill(oc.getSkill())
                 .hobby(oc.getHobby())
+                .favouriteClothesId(oc.getFavouriteClothesId())
                 .build();
         return  ocDetailVO;
     }
@@ -153,7 +159,7 @@ public class OcServiceImpl implements OcService {
      * @return
      */
     @Override
-    public Boolean deleteOc(Integer ocId, Integer userUid) {
+    public Boolean deleteOc(Integer ocId, Integer userUid) throws Exception {
         Integer OcUserId = ocMapper.selectUserUidByOcId(ocId);
         if (!Objects.equals(userUid, OcUserId)) {
             throw new PermissionDeniedException();
@@ -163,12 +169,11 @@ public class OcServiceImpl implements OcService {
         }
 
         //查询clothesOcId为ocId的所有服装
-        List<Clothes> clothes = clothesMapper.selectAllClothesByOcId(ocId);
+        List<ClothesBaseInfoVO> clothes = clothesService.listAllClothesBaseInfo(ocId, userUid);
         //删除属于ocid的所有服装
-        for (Clothes cloth:
+        for (ClothesBaseInfoVO cloth:
                 clothes) {
-            Integer clothesId = cloth.getClothesId();
-            clothesMapper.deleteClothesByClothesId(clothesId);
+            clothesService.deleteClothes(cloth);
         }
 
         ocMapper.deleteOc(ocId);

@@ -14,4 +14,6 @@ public class OcBaseInfoVO {
     private String name;
     private String gender;
     private int age;
+    private Integer favouriteClothesId;
+    private String abbUrl;
 }

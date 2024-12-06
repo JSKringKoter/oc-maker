@@ -24,4 +24,5 @@ public class OcDetailVO {
     private String personality;    // 性格特点
     private String skill;          // 特长
     private String hobby;          // 爱好
+    private Integer favouriteClothesId;
 }

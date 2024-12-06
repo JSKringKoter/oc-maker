@@ -32,6 +32,7 @@ public class Oc {
     private String hobby;          // 爱好
     private LocalDateTime createTime;   //创建时间
     private LocalDateTime updateTime;   //更新时间
+    private Integer favouriteClothesId;
     private Integer userUid;       // 隶属于用户的id
 
 

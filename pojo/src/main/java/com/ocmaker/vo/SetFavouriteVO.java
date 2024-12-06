@@ -9,12 +9,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ClothesBaseInfoVO {
+public class SetFavouriteVO {
+    Integer ocId;
     Integer clothesId;
-    Integer clothesOcId;
-    String imgUrl;
-    String abbImgUrl;
-    String name;
-    String describe;
-    boolean isCollect;
 }

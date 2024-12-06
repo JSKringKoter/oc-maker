@@ -9,12 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ClothesBaseInfoVO {
-    Integer clothesId;
-    Integer clothesOcId;
-    String imgUrl;
-    String abbImgUrl;
-    String name;
-    String describe;
-    boolean isCollect;
+public class CollectClothesVO {
+    private Integer clothesOcId;
+    private Integer clothesId;
+    private boolean isCollect;
 }

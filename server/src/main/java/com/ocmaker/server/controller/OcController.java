@@ -72,7 +72,7 @@ public class OcController {
     }
 
     @DeleteMapping("/delete/{ocId}")
-    public Result<?> deleteOc(@PathVariable Integer ocId, @RequestAttribute Integer user_uid) {
+    public Result<?> deleteOc(@PathVariable Integer ocId, @RequestAttribute Integer user_uid) throws Exception {
         log.info("删除id为{}的oc", ocId);
         return ocService.deleteOc(ocId, user_uid) ? Result.success() : Result.error("");
     }

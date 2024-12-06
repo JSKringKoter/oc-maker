@@ -24,5 +24,6 @@ public class ClothesDetailVO {
     private String legDecorate;
     private String shoes;
     private String otherDecorate;
+    private boolean isCollect;
     private Integer clothesOcId;
 }

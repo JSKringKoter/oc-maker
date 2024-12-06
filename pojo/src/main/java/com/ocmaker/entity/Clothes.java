@@ -27,6 +27,7 @@ public class Clothes {
     private String legDecorate;
     private String shoes;
     private String otherDecorate;
+    private boolean isCollect;
     private LocalDateTime createTime;
     private LocalDateTime updateTime;
     private Integer clothesOcId;

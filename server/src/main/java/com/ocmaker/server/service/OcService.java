@@ -16,5 +16,5 @@ public interface OcService {
 
     public Boolean updateOcDetailInfo(OcDetailVO ocDetailVO, Integer ocId);
 
-    public Boolean deleteOc(Integer ocId, Integer userUid);
+    public Boolean deleteOc(Integer ocId, Integer userUid) throws Exception;
 }

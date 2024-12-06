@@ -41,6 +41,9 @@ public interface OcMapper {
             "WHERE oc_id = #{ocId}")
     public void updateOcDetailInfo(Oc oc, Integer ocId);
 
+    @Update("update oc_maker.oc set favourite_clothes_id = #{clothesId} where oc_id = #{ocId}")
+    public void setFavouriteClothesById(Integer clothesId, Integer ocId);
+
     @Delete("delete from oc_maker.oc where oc_id = #{ocId}")
     public void deleteOc(Integer ocId);
 }

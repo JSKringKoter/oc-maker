@@ -38,6 +38,9 @@ public interface ClothesMapper {
             "where clothes_id = #{clothesId}")
     public void updateClothesDetailInfo(Clothes clothes);
 
+    @Update("update oc_maker.clothes set is_collect = #{isCollect} where clothes_id = #{clothesId}")
+    public void updateIsCollect(boolean isCollect, Integer clothesId);
+
     @Delete("delete from oc_maker.clothes where clothes_id = #{clothesId}")
     public void deleteClothesByClothesId(Integer clothesId);
 
