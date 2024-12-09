@@ -71,9 +71,34 @@ public class OcController {
         return ocService.updateOcDetailInfo(ocDetailVO, ocId) ? Result.success() : Result.error("");
     }
 
+    /**
+     * 单个删除
+     * @param ocId
+     * @param user_uid
+     * @return
+     * @throws Exception
+     */
     @DeleteMapping("/delete/{ocId}")
     public Result<?> deleteOc(@PathVariable Integer ocId, @RequestAttribute Integer user_uid) throws Exception {
         log.info("删除id为{}的oc", ocId);
         return ocService.deleteOc(ocId, user_uid) ? Result.success() : Result.error("");
     }
+
+    /**
+     * 批量删除oc
+     * @param ocIds
+     * @param user_uid
+     * @return
+     * @throws Exception
+     */
+    @DeleteMapping("/batch-delete")
+    public Result<?> batchDeleteOc(@RequestBody List<Integer> ocIds, @RequestAttribute Integer user_uid) throws Exception {
+        log.info("批量删除oc，共删除了{}个", ocIds.size());
+        for (Integer ocId :
+                ocIds) {
+            ocService.deleteOc(ocId, user_uid);
+        }
+        return Result.success();
+    }
+
 }

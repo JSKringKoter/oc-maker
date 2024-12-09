@@ -30,8 +30,8 @@ public class LoginCheckInterceptor implements HandlerInterceptor {
         log.info("请求的url: {}", url);
 
         //判断请求中是否含有login，如果包含，则放行
-        if (url.contains("login")) {
-            log.info("用户登陆，放行");
+        if (url.contains("/auth")) {
+            log.info("用户登陆或注册，放行");
             return true;
         }
 
