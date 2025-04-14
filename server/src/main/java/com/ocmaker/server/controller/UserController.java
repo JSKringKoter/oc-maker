@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.ocmaker.common.result.Result;
 import com.ocmaker.common.utils.JwtUtils;
+import com.ocmaker.dto.RegisterInfoDTO;
 import com.ocmaker.dto.UserInfoDTO;
 import com.ocmaker.entity.UserInfo;
 import com.ocmaker.server.exception.LoginFailException;
@@ -48,9 +49,9 @@ public class UserController {
     }
 
     @PostMapping("/register")
-    public Result<?> register(@RequestBody UserInfoDTO userInfoDTO) {
-        log.info("用户注册{}", userInfoDTO);
-        UserInfo userInfo = userService.register(userInfoDTO);
+    public Result<?> register(@RequestBody RegisterInfoDTO info) {
+        log.info("用户注册{}", info);
+        UserInfo userInfo = userService.register(info);
 
         //如果注册成功
         return Result.success();

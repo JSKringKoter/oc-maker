@@ -15,5 +15,6 @@ public class ImageUtils {
                 .keepAspectRatio(false)
                 .toFile(abbreviatedImagePath);
         return "abb_" + imageName;
+
     }
 }

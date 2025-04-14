@@ -48,7 +48,6 @@ public class PromptChatGenerator {
         //通过json解析获得最终的result数据
         String result = resultJson.getJSONArray("choices")
                 .getJSONObject(0)
-
                 .getJSONObject("message")
                 .getStr("content");
         //获得http状态码

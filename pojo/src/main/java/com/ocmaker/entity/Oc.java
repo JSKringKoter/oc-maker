@@ -50,7 +50,7 @@ public class Oc {
             //检查name是否在排除的字段内
             String name = field.getName();
             if (!name.equals("ocId") && !name.equals("name") && !name.equals("skill") && !name.equals("hobby") && !name.equals("createTime")
-                    && !name.equals("updateTime") && !name.equals("userUid") && !name.equals("personality")) {
+                    && !name.equals("updateTime") && !name.equals("userUid") && !name.equals("personality") && !name.equals("favouriteClothesId")) {
                 Object value = field.get(oc);
                 //处理一些额外的逻辑
 //                if (name.equals("gender")) {

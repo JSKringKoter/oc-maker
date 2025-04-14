@@ -46,7 +46,7 @@ public class Clothes {
             //检查name是否在排除的字段内
             String name = field.getName();
             if (!name.equals("clothesId") && !name.equals("name") && !name.equals("describe") && !name.equals("imgUrl") && !name.equals("createTime")
-                    && !name.equals("updateTime") && !name.equals("clothesOcId")) {
+                    && !name.equals("updateTime") && !name.equals("clothesOcId") && !name.equals("abbImgUrl") && !name.equals("isCollect")) {
                 Object value = field.get(clothes);
                 info.append(name);
                 info.append(":");

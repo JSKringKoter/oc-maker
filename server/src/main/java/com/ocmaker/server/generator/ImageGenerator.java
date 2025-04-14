@@ -38,7 +38,7 @@ public class ImageGenerator {
         String requestBody = String.format("""
                 {
                     "input": "solo, straight-on, %s",
-                    "model": "nai-diffusion-3",
+                    "model": "nai-diffusion-4",
                     "action": "generate",
                     "parameters": {
                         "width": 832,

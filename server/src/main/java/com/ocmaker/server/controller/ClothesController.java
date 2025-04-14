@@ -28,7 +28,7 @@ public class ClothesController {
      */
     @GetMapping("/base-info/{ocId}")
     public Result<List<ClothesBaseInfoVO>> listAllClothesBaseInfo(@PathVariable Integer ocId, @RequestAttribute Integer user_uid) {
-        log.info("查询ocId为{}的所有服装的基本信息", ocId);
+                                                                                                                                                                                                     log.info("查询ocId为{}的所有服装的基本信息", ocId);
         List<ClothesBaseInfoVO> baseInfoVOS = clothesService.listAllClothesBaseInfo(ocId, user_uid);
         return Result.success(baseInfoVOS);
     }

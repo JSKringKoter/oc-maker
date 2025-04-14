@@ -22,7 +22,7 @@ public class ZipUtils {
                 byte[] buffer = new byte[1024];
                 int len;
                 while ((len = zis.read(buffer)) > 0) {
-                bos.write(buffer, 0, len);
+                    bos.write(buffer, 0, len);
                 }
                 imageBytes = bos.toByteArray();
         }
